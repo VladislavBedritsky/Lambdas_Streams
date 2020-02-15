@@ -1,34 +1,38 @@
-import javax.management.StandardEmitterMBean;
-import java.util.Arrays;
-import java.util.List;
+import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 public class Main {
-    private ExtendedList<Integer> list;
+    private static ExtendedList<Integer> list;
 
     public static void main(String[] args) {
-        ExtendedList<Integer> list = new ExtendedList<>();
+        list = new ExtendedList<>();
 
-        // map
+    // map
         UnaryOperator<Integer> square = x -> x*x;
         list.map(square);
         System.out.println("____________");
 
-        // feel
+     // feel
         Consumer<Integer> consumer = list::add;
         list.feel(consumer);
         list.forEach(System.out::println);
         System.out.println("____________");
 
-        // forAll
+    // forAll
         Predicate<Integer> predicate = (val) -> val % 2 == 0;
         System.out.println(list.forAll(predicate));
         System.out.println("____________");
 
-        // predicate
+    // predicate
         list.partition(predicate).forEach(x -> x.forEach(System.out::println));
+        System.out.println("____________");
 
+    // reduce
+        Integer monoid = 0;
+        BinaryOperator<Integer> binaryOperator = Integer::sum; // (x,y) -> x + y
+        list.reduce(binaryOperator,monoid);
     }
 }
